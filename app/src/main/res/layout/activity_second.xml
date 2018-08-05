@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/baseLayout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/colorGrey"
+    tools:layout_editor_absoluteY="25dp">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        >
+
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="#b981d5"
+            android:shadowRadius="5"
+            android:textColor="@android:color/background_light" />
+
+
+        <Button
+            android:id="@+id/btnBack"
+            android:layout_width="110dp"
+            android:layout_height="50dp"
+            android:layout_alignBaseline="@id/btnPhoto"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:background="#b981d5"
+            android:onClick="onClickBack"
+            android:shadowRadius="5"
+            android:text="@string/back"
+            android:textColor="@android:color/background_light"
+            app:layout_constraintVertical_bias="0.982" />
+
+        <Button
+            android:id="@+id/btnPhoto"
+            android:layout_width="110dp"
+            android:layout_height="50dp"
+            android:layout_alignBaseline="@+id/btnCheck"
+            android:layout_alignBottom="@+id/btnCheck"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="12dp"
+            android:layout_marginStart="12dp"
+            android:layout_toEndOf="@+id/btnBack"
+            android:layout_toRightOf="@+id/btnBack"
+            android:background="#b981d5"
+            android:onClick="onClickPhoto"
+            android:shadowRadius="5"
+            android:text="@string/photo"
+            android:textColor="@android:color/background_light"
+            app:layout_constraintVertical_bias="0.982" />
+
+        <ImageView
+            android:id="@+id/ivPhoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/btnBack"
+            android:layout_below="@id/spinner"
+            />
+
+        <Button
+            android:id="@+id/btnCheck"
+            android:layout_width="110dp"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="5dp"
+            android:layout_marginLeft="11dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginStart="11dp"
+            android:layout_toEndOf="@+id/btnPhoto"
+            android:layout_toRightOf="@+id/btnPhoto"
+            android:background="#b981d5"
+            android:onClick="onClickCheck"
+            android:shadowRadius="5"
+            android:text="@string/check"
+            android:textColor="@android:color/background_light"
+            app:layout_constraintVertical_bias="0.982" />
+
+
+
+        <ProgressBar
+            android:id="@+id/progress"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:visibility="invisible" />
+    </RelativeLayout>
+
+</android.support.constraint.ConstraintLayout>
