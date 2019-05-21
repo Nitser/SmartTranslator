@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:ndroid="http://schemas.android.com/apk/res-auto"
+    tools:context=".Activities.HomeActivity">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/historyView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"
+        android:divider="@color/colorPrimary"
+        android:dividerHeight="0dp"
+        android:fadingEdge="horizontal"
+        android:fadingEdgeLength="40dp"
+        android:requiresFadingEdge="vertical"
+        android:fillViewport="false"/>
+
+</android.support.constraint.ConstraintLayout>

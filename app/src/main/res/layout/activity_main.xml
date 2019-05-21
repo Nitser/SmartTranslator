@@ -2,53 +2,297 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:layout_height="match_parent">
 
-   <!-- <TextView
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:id="@+id/action_bar"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />-->
+        android:background="@android:color/white"
+        android:elevation="2dp"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:translationZ="0.4dp"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="178dp"
-        android:layout_height="46dp"
-        android:text="@string/name"
-        android:textSize="30sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.553"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.105"
-        tools:textColor="@android:color/background_light" />
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="14dp"
+            android:tint="@color/colorPrimaryDark"
+            android:background="@drawable/ic_arrows_left"
+            android:onClick="onClickBackButton" />
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="135dp"
-        android:layout_height="67dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:background="#b981d5"
-        android:text="@string/start"
-        android:textColor="@android:color/background_light"
-        android:elevation="50dp"
-        android:shadowRadius="5"
-        android:onClick="onClickActionButton"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.545"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:layout_constraintVertical_bias="0.162" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="44dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:text="@string/back"
+            android:textSize="20sp"
+            android:layout_marginBottom="15dp"/>
+
+        <CheckBox
+            android:id="@+id/heart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="22dp"
+            android:layout_centerVertical="true"
+            android:button="@drawable/cb_heart"
+            android:stateListAnimator="@animator/anim_heart" />
+
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/ivPhoto"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_margin="0dp"
+        android:background="@color/colorLightGrey"
+        android:elevation="6dp"
+        android:scaleType="centerCrop"
+        android:translationZ="0.5dp"
+        app:layout_constraintTop_toBottomOf="@id/action_bar"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="174dp"
+        app:layout_constraintBottom_toTopOf="@id/flags"
+        app:layout_constraintTop_toBottomOf="@+id/ivPhoto">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/list_results"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@color/colorPrimary"
+            android:dividerHeight="0dp"
+            android:fadingEdge="horizontal"
+            android:fadingEdgeLength="40dp"
+            android:fillViewport="false"
+            android:orientation="vertical"
+            android:requiresFadingEdge="vertical" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/flags"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:minHeight="40dp"
+        android:onClick="onClickFlagButton"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <ImageView
+            android:id="@+id/fromFlag"
+            android:layout_width="40dp"
+            android:layout_height="30dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="109dp" />
+
+        <ImageView
+            android:id="@+id/toFlag"
+            android:layout_width="40dp"
+            android:layout_height="30dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="110dp"
+            android:layout_marginTop="5dp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_line" />
+
+    </RelativeLayout>
 
 </android.support.constraint.ConstraintLayout>
+
+
+
+<!--
+    <?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="fill_parent"
+android:layout_height="fill_parent"
+android:background="@color/colorMainGrey">
+
+<ScrollView
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:layout_above="@id/buttons"
+    android:fillViewport="true" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_margin="10dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:textColor="#ffffff"
+                    android:textSize="18sp"
+                    android:text="@string/from"/>
+
+                <HorizontalScrollView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                        <ScrollView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                                <LinearLayout
+                                    android:id="@+id/viewFrom"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"/>
+
+                        </ScrollView>
+                </HorizontalScrollView>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height= "1dp"
+                    android:background="@color/colorLightGrey"
+                    android:elevation="6dp"
+                    android:translationZ="2dp"
+                    android:layout_marginVertical="20dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:textColor="#ffffff"
+                    android:textSize="18sp"
+                    android:text="@string/to"/>
+
+                <HorizontalScrollView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                        <ScrollView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                                <LinearLayout
+                                    android:id="@+id/viewTo"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal" />
+
+                        </ScrollView>
+                </HorizontalScrollView>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height= "1dp"
+                    android:background="@color/colorLightGrey"
+                    android:elevation="6dp"
+                    android:translationZ="2dp"
+                    android:layout_marginVertical="20dp"/>
+
+                <ImageView
+                    android:id="@+id/ivPhoto"
+                    android:elevation="6dp"
+                    android:translationZ="4dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:scaleType="centerCrop"
+                    android:layout_gravity="center"
+                    android:background="@color/colorLightGrey"
+                    />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height= "1dp"
+                    android:background="@color/colorLightGrey"
+                    android:elevation="6dp"
+                    android:translationZ="2dp"
+                    android:layout_marginVertical="20dp"/>
+
+                <LinearLayout
+                    android:id="@+id/list_results"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:minHeight="100dp"
+                    android:layout_marginBottom="20dp">
+
+                        <include layout="@layout/hint_textview"/>
+
+                </LinearLayout>
+
+        </LinearLayout>
+
+</ScrollView>
+
+<LinearLayout
+    android:id="@+id/buttons"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+
+    android:layout_alignParentBottom="true"
+    tools:targetApi="lollipop">
+
+        <Button
+            android:elevation="10dp"
+            android:translationZ="10dp"
+            android:id="@+id/btnBack"
+            android:layout_width="0dp"
+            android:layout_weight="0.3"
+            android:layout_height="50dp"
+            android:background="@color/colorPrimary"
+            android:onClick="onClickBack"
+            android:shadowRadius="5"
+            android:text="@string/back"
+            android:textColor="@color/colorMainGrey" />
+
+        <Button
+            android:elevation="10dp"
+            android:translationZ="10dp"
+            android:id="@+id/btnPhoto"
+            android:layout_width="0dp"
+            android:layout_weight="0.4"
+            android:layout_height="50dp"
+            android:background="@color/colorPrimary"
+            android:onClick="onClickPhoto"
+            android:shadowRadius="5"
+            android:text="@string/photo"
+            android:textColor="@color/colorMainGrey" />
+
+
+        <Button
+            android:elevation="10dp"
+            android:translationZ="10dp"
+            android:id="@+id/btnCheck"
+            android:layout_height="50dp"
+            android:layout_width="0dp"
+            android:layout_weight="0.3"
+            android:background="@color/colorPrimary"
+            android:onClick="onClickCheck"
+            android:shadowRadius="5"
+            android:text="@string/check"
+            android:textColor="@color/colorMainGrey" />
+
+</LinearLayout>
+
+
+</RelativeLayout>
+    -->

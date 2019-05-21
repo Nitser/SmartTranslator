@@ -1,12 +1,19 @@
 <resources>
-    <string name="app_name">SmartTranslator</string>
-    <string name="name">  PIC-TRANS</string>
-    <string name="action_settings">Settings</string>
+    <string name="app_name">ПЕРСЕТЬ</string>
     <string name="start">Start</string>
-    <string name="about_title">О программе</string>
-    <string name="task">Жми на кнопку</string>
     <string name="photo">Photo</string>
-    <string name="back">Back</string>
+    <string name="back">Домой</string>
     <string name="check">Check</string>
-    <string name="todo">TODO</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="from">From</string>
+    <string name="to">To</string>
+    <string name="result">RESULT</string>
+    <string name="results_hint">----------- Results will be here -----------</string>
+    <string name="favorite">favorite</string>
+    <string name="no_results">Sorry, we nothing found :(</string>
+    <string name="List_of_languages">Список языков</string>
+    <string name="bback">Назад</string>
+    <string name="offer">Если вам понравилось наше приложение, мы были бы счастливы если бы вы угостили нас чашечкой коффе</string>
+    <string name="pleasepay">#НАВКУСНОЕКОФЕ</string>
+    <string name="reset">Сбросить</string>
 </resources>
