@@ -6,18 +6,18 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.example.admin.smarttranslator.Entities.PhotoCard;
-import com.example.admin.smarttranslator.Entities.User;
+import com.example.admin.smarttranslator.Models.PhotoCard;
+import com.example.admin.smarttranslator.Models.User;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class DataBaseServise extends SQLiteOpenHelper {
+public class DataBaseService extends SQLiteOpenHelper {
 
-    private String strSeparator = ",";
+    private final static String strSeparator = ",";
 
-    public DataBaseServise(Context context) {
+    public DataBaseService(Context context) {
         super(context, "NeoPhotoCard", null, 1);
     }
 
@@ -46,27 +46,16 @@ public class DataBaseServise extends SQLiteOpenHelper {
         Cursor c = db.query("photocard", null, null, null, null, null, null);
 
         if (c.moveToFirst()) {
-
-            int idColIndex = c.getColumnIndex("id");
-            int pathColIndex = c.getColumnIndex("path");
-            int likedColIndex = c.getColumnIndex("liked");
-            int fromColIndex = c.getColumnIndex("lanfrom");
-            int toColIndex = c.getColumnIndex("lanto");
-            int fromResultColIndex = c.getColumnIndex("resultfrom");
-            int toResultColIndex = c.getColumnIndex("resultto");
-            int neoResultColIndex = c.getColumnIndex("resultneo");
-
-
             do {
                 PhotoCard photoCard = new PhotoCard();
-                photoCard.setId(c.getInt(idColIndex));
-                photoCard.setFilePath(c.getString(pathColIndex));
-                photoCard.setLiked(c.getInt(likedColIndex) == 1);
-                photoCard.setLanFrom(c.getString(fromColIndex));
-                photoCard.setLanTo(c.getString(toColIndex));
-                photoCard.setNeoResult(convertStringToArray(c.getString(neoResultColIndex)));
-                photoCard.setResultFrom(convertStringToArray(c.getString(fromResultColIndex)));
-                photoCard.setResultTo(convertStringToArray(c.getString(toResultColIndex)));
+                photoCard.setId(c.getInt(c.getColumnIndex("id")));
+                photoCard.setFilePath(c.getString(c.getColumnIndex("path")));
+                photoCard.setLiked(c.getInt( c.getColumnIndex("liked")) == 1);
+                photoCard.setLanFrom(c.getString(c.getColumnIndex("lanfrom")));
+                photoCard.setLanTo(c.getString(c.getColumnIndex("lanto")));
+                photoCard.setNeoResult(convertStringToArray(c.getString(c.getColumnIndex("resultneo"))));
+                photoCard.setResultFrom(convertStringToArray(c.getString(c.getColumnIndex("resultfrom"))));
+                photoCard.setResultTo(convertStringToArray(c.getString(c.getColumnIndex("resultto"))));
 
                 User.getPhotoCardStorage().add(photoCard);
                 if(photoCard.isLiked())
@@ -87,6 +76,7 @@ public class DataBaseServise extends SQLiteOpenHelper {
         }
         return str.toString();
     }
+
     private List<String> convertStringToArray(String str){
         String[] arr = str.split(strSeparator);
         return new ArrayList<>(Arrays.asList(arr));

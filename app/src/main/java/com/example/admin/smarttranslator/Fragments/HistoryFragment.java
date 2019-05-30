@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.admin.smarttranslator.Adapters.HistoryAdapter;
-import com.example.admin.smarttranslator.Entities.User;
+import com.example.admin.smarttranslator.Models.User;
 import com.example.admin.smarttranslator.R;
 
 public class HistoryFragment extends Fragment {

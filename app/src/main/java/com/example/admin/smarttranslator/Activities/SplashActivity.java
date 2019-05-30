@@ -8,9 +8,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 import android.widget.TextView;
 
-import com.example.admin.smarttranslator.Entities.PhotoCard;
+import com.example.admin.smarttranslator.Models.PhotoCard;
+import com.example.admin.smarttranslator.Models.User;
 import com.example.admin.smarttranslator.R;
-import com.example.admin.smarttranslator.Services.InternalStorage;
+import com.example.admin.smarttranslator.Services.DataBaseService;
+import com.example.admin.smarttranslator.Services.PhotoService;
+
+import java.io.File;
 
 public class SplashActivity extends AppCompatActivity {
     @Override
@@ -19,10 +23,18 @@ public class SplashActivity extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.splash_layout);
 
-        PhotoCard.width = getWindowManager().getDefaultDisplay().getWidth();
+        init();
 
-        InternalStorage internalStorage = new InternalStorage(this);
-        internalStorage.execute();
+        new Handler().postDelayed(() -> {
+            loadPhotoCard();
+            Intent intent = new Intent(SplashActivity.this, HomeActivity.class);
+            startActivity(intent);
+            finish();
+        }, 3*1000);
+    }
+
+    private void init(){
+        PhotoCard.width = getWindowManager().getDefaultDisplay().getWidth();
 
         TextView label_1 = findViewById(R.id.label_1);
         TextView label_2 = findViewById(R.id.label_2);
@@ -32,11 +44,21 @@ public class SplashActivity extends AppCompatActivity {
 
         label_1.setTypeface(custom_font_label_1);
         label_2.setTypeface(custom_font_label_2);
+    }
 
-        new Handler().postDelayed(() -> {
-            Intent intent = new Intent(SplashActivity.this, HomeActivity.class);
-            startActivity(intent);
-            finish();
-        }, 3*1000);
+    private void loadPhotoCard(){
+        DataBaseService db = new DataBaseService(this);
+        db.loadPhotoCard();
+        PhotoService storagePhotoService = new PhotoService();
+        for(PhotoCard photoCard: User.getPhotoCardStorage()){
+            File file = new File(photoCard.getFilePath());
+            if(file.exists())
+                photoCard.setBitmap(storagePhotoService.decodingPhoto(photoCard.getFilePath(), PhotoCard.width, PhotoCard.width));
+            else {
+                db.deletePhotoCard(photoCard);
+                User.getPhotoCardStorage().remove(photoCard);
+                User.getLikedPhotoCardStorage().remove(photoCard);
+            }
+        }
     }
 }

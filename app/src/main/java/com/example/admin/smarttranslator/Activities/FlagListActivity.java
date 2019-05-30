@@ -5,16 +5,13 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.CheckBox;
-import android.widget.RelativeLayout;
 
 import com.example.admin.smarttranslator.Adapters.FlagListAdapter;
-import com.example.admin.smarttranslator.Entities.Language;
-import com.example.admin.smarttranslator.Entities.User;
+import com.example.admin.smarttranslator.Models.Language;
+import com.example.admin.smarttranslator.Models.User;
 import com.example.admin.smarttranslator.R;
 
 public class FlagListActivity extends AppCompatActivity {

@@ -2,10 +2,7 @@ package com.example.admin.smarttranslator.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
@@ -13,27 +10,23 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.example.admin.smarttranslator.Activities.SecondActivity;
-import com.example.admin.smarttranslator.Entities.PhotoCard;
+import com.example.admin.smarttranslator.Models.PhotoCard;
 import com.example.admin.smarttranslator.R;
-import com.example.admin.smarttranslator.Services.StoragePhotoService;
+import com.example.admin.smarttranslator.Services.PhotoService;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.util.List;
 
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder> {
 
     private List<PhotoCard> photos;
     private Context context;
-    private StoragePhotoService storagePhotoService;
+    private PhotoService photoService;
 
     static class HistoryViewHolder extends RecyclerView.ViewHolder {
         RelativeLayout mView;
@@ -55,7 +48,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
     public HistoryAdapter(List<PhotoCard> photos, Context context){
         this.photos =  photos;
         this.context = context;
-        storagePhotoService = new StoragePhotoService(context);
+        photoService = new PhotoService();
     }
 
     @NonNull
@@ -78,7 +71,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
         ImageView flagFrom = (ImageView) linearLayout.getChildAt(0);
         ImageView flagTo = (ImageView) linearLayout.getChildAt(2);
 
-        Bitmap bitmap = storagePhotoService.decodingPhoto(photos.get(i).getFilePath(), 150, 200);
+        Bitmap bitmap = photoService.decodingPhoto(photos.get(i).getFilePath(), 150, 200);
         imageView.setImageBitmap(bitmap);
 
         int fromId = myViewHolder.mView.getResources().getIdentifier("ic_"+photos.get(i).getLanFrom(), "mipmap", myViewHolder.mView.getContext().getPackageName());

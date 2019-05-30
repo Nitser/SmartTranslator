@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.example.admin.smarttranslator.Entities.Language;
+import com.example.admin.smarttranslator.Models.Language;
 import com.example.admin.smarttranslator.R;
 
 public class FlagListAdapter extends RecyclerView.Adapter<FlagListAdapter.FlagViewHolder> {

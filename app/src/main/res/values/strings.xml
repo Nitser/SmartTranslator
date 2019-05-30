@@ -13,7 +13,9 @@
     <string name="no_results">Sorry, we nothing found :(</string>
     <string name="List_of_languages">Список языков</string>
     <string name="bback">Назад</string>
-    <string name="offer">Если вам понравилось наше приложение, мы были бы счастливы если бы вы угостили нас чашечкой коффе</string>
-    <string name="pleasepay">#НАВКУСНОЕКОФЕ</string>
+    <string name="offer">в разработке</string>
+    <string name="pleasepay">#ВРАЗРАБОТКЕ</string>
+    <!--<string name="offer">Если вам понравилось наше приложение, мы были бы счастливы если бы вы угостили нас чашечкой коффе</string>-->
+    <!--<string name="pleasepay">#НАВКУСНОЕКОФЕ</string>-->
     <string name="reset">Сбросить</string>
 </resources>

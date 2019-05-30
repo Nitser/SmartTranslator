@@ -1,34 +1,15 @@
 package com.example.admin.smarttranslator.Services;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
-import android.media.ExifInterface;
-import android.os.AsyncTask;
-import android.os.Environment;
+import android.support.media.ExifInterface;
 import android.util.Log;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
-public class StoragePhotoService  {
-
-    private Context context;
-
-    public StoragePhotoService(Context context){ this.context = context; }
-
-    public File createImageFile() throws IOException {
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        return File.createTempFile( imageFileName, ".jpg", storageDir );
-    }
+public class PhotoService {
 
     public Bitmap decodingPhoto(String path, int width, int height){
         BitmapFactory.Options options = new BitmapFactory.Options();
@@ -42,7 +23,7 @@ public class StoragePhotoService  {
         return resultBitmap;
     }
 
-    public Bitmap compressPhoto(Bitmap bitmap, String path) {
+    public void compressPhoto(Bitmap bitmap, String path) {
 
         try(FileOutputStream out = new FileOutputStream(path)){
 
@@ -52,10 +33,9 @@ public class StoragePhotoService  {
             e.printStackTrace();
         }
 
-        return bitmap;
     }
 
-    public int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+    private int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
         final int height = options.outHeight;
         final int width = options.outWidth;
         int inSampleSize = 1;

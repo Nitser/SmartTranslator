@@ -3,9 +3,7 @@ package com.example.admin.smarttranslator.Adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.os.Build;
 import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -16,9 +14,9 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.example.admin.smarttranslator.Activities.SecondActivity;
-import com.example.admin.smarttranslator.Entities.PhotoCard;
+import com.example.admin.smarttranslator.Models.PhotoCard;
 import com.example.admin.smarttranslator.R;
-import com.example.admin.smarttranslator.Services.StoragePhotoService;
+import com.example.admin.smarttranslator.Services.PhotoService;
 
 import java.util.List;
 
@@ -26,7 +24,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.Favori
 
     private List<PhotoCard> photos;
     private Context context;
-    private StoragePhotoService storagePhotoService;
+    private PhotoService photoService;
 
     static class FavoriteViewHolder extends RecyclerView.ViewHolder {
         RelativeLayout mView;
@@ -48,7 +46,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.Favori
     public FavoriteAdapter(List<PhotoCard> photos, Context context){
         this.photos =  photos;
         this.context = context;
-        storagePhotoService = new StoragePhotoService(context);
+        photoService = new PhotoService();
     }
 
     @NonNull
@@ -70,7 +68,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.Favori
         ImageView flagFrom = (ImageView) linearLayout.getChildAt(0);
         ImageView flagTo = (ImageView) linearLayout.getChildAt(2);
 
-        Bitmap bitmap = storagePhotoService.decodingPhoto(photos.get(i).getFilePath(), 150, 200);
+        Bitmap bitmap = photoService.decodingPhoto(photos.get(i).getFilePath(), 150, 200);
         imageView.setImageBitmap(bitmap);
 
         int fromId = myViewHolder.mView.getResources().getIdentifier("ic_"+photos.get(i).getLanFrom(), "mipmap", myViewHolder.mView.getContext().getPackageName());

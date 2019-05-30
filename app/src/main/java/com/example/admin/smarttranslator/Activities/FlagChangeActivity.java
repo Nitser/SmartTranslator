@@ -12,7 +12,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.admin.smarttranslator.Adapters.FlagAdapter;
-import com.example.admin.smarttranslator.Entities.User;
+import com.example.admin.smarttranslator.Models.User;
 import com.example.admin.smarttranslator.LayoutManagers.CenterZoomLayoutManager;
 import com.example.admin.smarttranslator.R;
 

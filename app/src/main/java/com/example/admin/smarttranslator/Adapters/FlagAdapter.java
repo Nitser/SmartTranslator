@@ -10,9 +10,8 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
-import com.example.admin.smarttranslator.Entities.Language;
+import com.example.admin.smarttranslator.Models.Language;
 import com.example.admin.smarttranslator.R;
 
 import java.util.ArrayList;

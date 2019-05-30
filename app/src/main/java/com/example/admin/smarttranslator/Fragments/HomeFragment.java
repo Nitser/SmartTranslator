@@ -1,6 +1,5 @@
 package com.example.admin.smarttranslator.Fragments;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,21 +11,17 @@ import android.support.v7.widget.SnapHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
-import android.view.animation.LayoutAnimationController;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.admin.smarttranslator.Activities.FlagListActivity;
 import com.example.admin.smarttranslator.Activities.SecondActivity;
 import com.example.admin.smarttranslator.Adapters.FlagAdapter;
-import com.example.admin.smarttranslator.Entities.Language;
-import com.example.admin.smarttranslator.Entities.PhotoCard;
-import com.example.admin.smarttranslator.Entities.User;
+import com.example.admin.smarttranslator.Models.Language;
+import com.example.admin.smarttranslator.Models.PhotoCard;
+import com.example.admin.smarttranslator.Models.User;
 import com.example.admin.smarttranslator.LayoutManagers.CenterZoomLayoutManager;
-import com.example.admin.smarttranslator.Activities.HomeActivity;
 import com.example.admin.smarttranslator.R;
 
 

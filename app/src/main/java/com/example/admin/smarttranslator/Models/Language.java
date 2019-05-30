@@ -1,4 +1,4 @@
-package com.example.admin.smarttranslator.Entities;
+package com.example.admin.smarttranslator.Models;
 
 /**
  * Language - an enum of language codes supported by the Yandex API

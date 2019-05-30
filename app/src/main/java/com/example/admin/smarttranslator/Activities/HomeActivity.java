@@ -1,28 +1,16 @@
 package com.example.admin.smarttranslator.Activities;
 
-import android.content.Intent;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 
 import com.example.admin.smarttranslator.Fragments.CoffeeFragment;
 import com.example.admin.smarttranslator.Fragments.FavoriteFragment;
 import com.example.admin.smarttranslator.Fragments.HistoryFragment;
 import com.example.admin.smarttranslator.Fragments.HomeFragment;
-import com.example.admin.smarttranslator.Services.InternalStorage;
-import com.example.admin.smarttranslator.Entities.Language;
-import com.example.admin.smarttranslator.Entities.PhotoCard;
 import com.example.admin.smarttranslator.R;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package com.example.admin.smarttranslator.Entities;
+package com.example.admin.smarttranslator.Models;
 
 import android.graphics.Bitmap;
 import java.util.ArrayList;
