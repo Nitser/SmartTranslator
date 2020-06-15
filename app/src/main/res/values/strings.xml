@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ПЕРСЕТЬ</string>
+    <string name="app_name">Smart Translator</string>
     <string name="start">Start</string>
     <string name="photo">Photo</string>
     <string name="back">Домой</string>
@@ -15,7 +15,5 @@
     <string name="bback">Назад</string>
     <string name="offer">в разработке</string>
     <string name="pleasepay">#ВРАЗРАБОТКЕ</string>
-    <!--<string name="offer">Если вам понравилось наше приложение, мы были бы счастливы если бы вы угостили нас чашечкой коффе</string>-->
-    <!--<string name="pleasepay">#НАВКУСНОЕКОФЕ</string>-->
     <string name="reset">Сбросить</string>
 </resources>
