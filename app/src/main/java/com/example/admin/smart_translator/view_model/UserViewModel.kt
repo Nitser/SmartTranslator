@@ -28,6 +28,7 @@ class UserViewModel : ViewModel() {
     }
 
     fun loadPhotoCards(context: Context) {
+        // Базу данных обычно делают через синглтон и не создают при каждом обращении к ней. Могут появиться проблемы с несколькими соединениями к бд.
         val db = DataBaseService(context)
         val photoCardsFromDB = db.loadPhotoCard()
         val storagePhotoService = PhotoService()
