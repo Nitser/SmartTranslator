@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
+// Так как класс не имеет состояния, то можно метод createImageFile сделать тоже статическим
 class FileStorageService {
 
     fun createImageFile(context: Context): File {

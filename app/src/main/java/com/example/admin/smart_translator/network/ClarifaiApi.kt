@@ -12,6 +12,8 @@ object ClarifaiApi {
     private var predictionResults: List<ClarifaiOutput<Concept>>? = null
     private var resultList = ArrayList<String>()
 
+    // Всякие ключи часто хранят в build.gradle.
+    // Чтобы они были в одном месте и чтобы не так просто было их получить, если кто-то декомпилирует приложение
     private const val clarifaiKey = "c151c5d2a75e4ba1aa32bb937af40643"
 
     fun getClarifaiResult(currentUri: Uri) {

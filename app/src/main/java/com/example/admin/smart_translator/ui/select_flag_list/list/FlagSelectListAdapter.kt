@@ -31,6 +31,9 @@ class FlagSelectListAdapter(private val context: Context, private val listener: 
         val language = languages[i]
 
         holder.checkBox.isChecked = language.isChecked
+        // Изменять модель в адаптерах - обычно не очень хорошая идея.
+        // Лучше завести какую-нибудь внутреннюю переменную, если это состояние надо потом передать во вне.
+        // Или можно сразу вызывать какой-либо листенер с сообщением об изменении состояния
         holder.checkBox.setOnClickListener { language.isChecked = !language.isChecked }
 
         holder.flagIcon.setBackgroundResource(language.lanIconPath)

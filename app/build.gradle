@@ -32,6 +32,9 @@ android {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
     dataBinding {
+        // Тут студия подсказывает следующее:
+        // If you plan to use data binding in a Kotlin project, you should apply the kotlin-kapt plugin.
+        // Думаю, это надо добавить
         enabled = true
     }
 }

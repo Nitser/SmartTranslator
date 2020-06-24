@@ -32,6 +32,9 @@ class UserViewModel : ViewModel() {
         val photoCardsFromDB = db.loadPhotoCard()
         val storagePhotoService = PhotoService()
 
+        // Методы типа filter и map не изменяют коллекцию, а возвращают новую.
+        // То есть (если я не ошибаюсь) тут происходит работа впустую
+        // и сюда historyPhotoCards.postValue(photoCardsFromDB) передаётся photoCardsFromDB без изменений
         photoCardsFromDB.filter { File(it.filePath).exists() }
         photoCardsFromDB.map { it.bitmap = storagePhotoService.decodingPhoto(it.filePath) }
         historyPhotoCards.postValue(photoCardsFromDB)
