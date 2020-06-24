@@ -17,7 +17,8 @@ class PhotoService {
         BitmapFactory.decodeFile(path, options)
         options.inJustDecodeBounds = false
         var resultBitmap = BitmapFactory.decodeFile(path, options)
-
+        // Поймал крэш Caused by: java.lang.IllegalStateException: resultBitmap must not be null при закрытии камеры
+        // Надо добавить проверку на null и если что сделать так, чтобы метод возвращал null
         resultBitmap = changeOrientation(resultBitmap, getExifAngle(path))
         return resultBitmap
     }
