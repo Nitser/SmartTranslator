@@ -10,6 +10,8 @@ import com.example.admin.smart_translator.entities.PhotoCard
 import java.util.ArrayList
 import java.util.Arrays
 
+// Предлагаю заиспользовать Room (https://developer.android.com/topic/libraries/architecture/room) для работы с базой данных.
+// Сейчас это уже некий стандарт для работы с sqllite. Хотя, уметь работать с базой без библиотек - полезная штука)
 class DataBaseService(context: Context) : SQLiteOpenHelper(context, "NeoPhotoCard", null, 1) {
 
     fun addPhotoCard(photoCard: PhotoCard) {

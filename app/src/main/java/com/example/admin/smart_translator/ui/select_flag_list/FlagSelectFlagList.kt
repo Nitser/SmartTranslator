@@ -62,6 +62,7 @@ class FlagSelectFlagList : Fragment() {
         val layoutManager = LinearLayoutManager(requireContext())
         adapter = FlagSelectListAdapter(requireContext(), object : FlagSelectListAdapter.OnItemClickListener {
             override fun onItemClick(item: Language, id: Int, boardHolder: FlagSelectListViewHolder) {
+                // Какие-то похожие действия делаются тут и в адаптере. Может привести к непредвиденному поведению.
                 item.isChecked = !item.isChecked
                 boardHolder.checkBox.isChecked = item.isChecked
             }
