@@ -35,6 +35,9 @@ class CurrentPhotoCardViewModel : ViewModel() {
         return photoCard
     }
 
+    // Надо по возможности избегать использования Context во вьюиодели.
+    // Это в будущем может упрощать тестирование.
+    // И так мы убираем зависимоть вьюмодели от вью. Это хорошо, так как вьюмодель должна знать минимум информации о вью.
     fun getPhotoFromGallery(context: Context, photoCard: PhotoCard, uri: Uri): PhotoCard {
         val photoFile: File?
         photoFile = fileStorageService.createImageFile(context)
