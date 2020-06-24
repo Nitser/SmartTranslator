@@ -19,6 +19,10 @@ class UserViewModel : ViewModel() {
         return historyPhotoCards
     }
 
+    // Этот метод всегда вызывается вметсе с savePhotoCardToStorage из фрагметов
+    // Хотя по логике они похожи.
+    // Я бы обновлял historyPhotoCards в savePhotoCardToStorage,
+    // либо наоборот, сохранял бы данные в бд в этом методе.
     fun addHistoryPhotoCards(photoCard: PhotoCard) {
         historyPhotoCards.value?.add(photoCard)
     }
