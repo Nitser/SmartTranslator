@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout tools:context=".ui.select_flag_list.FlagSelectFlagList"
+<RelativeLayout tools:context=".ui.user_flag_selection.UserFlagSelectionFragment"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/layout_select_flag_layout"
     android:layout_width="fill_parent"

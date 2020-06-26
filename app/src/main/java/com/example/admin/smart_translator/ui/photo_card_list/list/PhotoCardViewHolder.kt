@@ -3,8 +3,8 @@ package com.example.admin.smart_translator.ui.photo_card_list.list
 import android.view.View
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.admin.smart_translator.entities.PhotoCard
 import com.example.admin.smart_translator.R
+import com.example.admin.smart_translator.model.PhotoCard
 
 class PhotoCardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 

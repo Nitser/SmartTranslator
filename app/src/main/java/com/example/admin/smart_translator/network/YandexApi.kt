@@ -1,11 +1,5 @@
 package com.example.admin.smart_translator.network
 
-import com.example.admin.smart_translator.entities.PhotoCard
-import java.io.BufferedReader
-import java.io.InputStreamReader
-import java.net.HttpURLConnection
-import java.net.URL
-
 object YandexTranslatorApi {
 
     //    private val currentPhotoCard: PhotoCard
@@ -18,7 +12,7 @@ object YandexTranslatorApi {
 //    fun getYandexResult(lanFrom: String, lanTo: String, photoCard: PhotoCard) {
 //        var jsonString: String
 //
-//        for (i in photoCard.neoResult) {
+//        for (i in photoCard.translationResult) {
 //            val yandexUrlFrom = "$yandexUri$yandexKey&text=$i&lang=$lanFrom"
 //            val yandexUrlTo = "$yandexUri$yandexKey&text=$i&lang=$lanTo"
 //            val yandexTranslateURLFrom = URL(yandexUrlFrom)
@@ -74,8 +68,8 @@ object YandexTranslatorApi {
 ////                if (from == "err" || to == "err") {
 ////                    break
 ////                } else {
-////                    currentPhotoCard.resultFrom.add(from.replace("\"".toRegex(), ""))
-////                    currentPhotoCard.resultTo.add(to.replace("\"".toRegex(), ""))
+////                    currentPhotoCard.translationFrom.add(from.replace("\"".toRegex(), ""))
+////                    currentPhotoCard.translationTo.add(to.replace("\"".toRegex(), ""))
 ////                }
 ////            }
 //

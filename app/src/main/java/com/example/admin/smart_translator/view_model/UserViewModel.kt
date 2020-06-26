@@ -4,9 +4,9 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.admin.smart_translator.entities.PhotoCard
-import com.example.admin.smart_translator.model.DataBaseService
-import com.example.admin.smart_translator.model.PhotoService
+import com.example.admin.smart_translator.model.PhotoCard
+import com.example.admin.smart_translator.utils.PhotoUtils
+import com.example.admin.smart_translator.utils.SQLiteDatabaseUtils
 import java.io.File
 import java.util.ArrayList
 
@@ -28,12 +28,12 @@ class UserViewModel : ViewModel() {
     }
 
     fun loadPhotoCards(context: Context) {
-        val db = DataBaseService(context)
-        val photoCardsFromDB = db.loadPhotoCard()
-        val storagePhotoService = PhotoService()
+        val db = SQLiteDatabaseUtils(context)
+        val photoCardsFromDB = db.downloadPhotoCard()
+        val storagePhotoService = PhotoUtils()
 
-        photoCardsFromDB.filter { File(it.filePath).exists() }
-        photoCardsFromDB.map { it.bitmap = storagePhotoService.decodingPhoto(it.filePath) }
+        photoCardsFromDB.filter { File(it.photoFilePathFromStorage).exists() }
+        photoCardsFromDB.map { it.photoBitmap = storagePhotoService.decoding(it.photoFilePathFromStorage) }
         historyPhotoCards.postValue(photoCardsFromDB)
 
         photoCardsFromDB.filter { it.isLiked }
@@ -41,8 +41,8 @@ class UserViewModel : ViewModel() {
     }
 
     fun savePhotoCardToStorage(context: Context, photoCard: PhotoCard) {
-        val db = DataBaseService(context)
-        db.addPhotoCard(photoCard)
+        val db = SQLiteDatabaseUtils(context)
+        db.updatePhotoCard(photoCard)
     }
 
 }

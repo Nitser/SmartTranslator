@@ -4,13 +4,13 @@ import com.google.gson.annotations.SerializedName
 
 class YandexTranslateResult {
 
-    @SerializedName("code")
-    var code: Int = 0
+    @SerializedName("responseCode")
+    var responseCode: Int = 0
 
     @SerializedName("lang")
     lateinit var fromToLang: String
 
     @SerializedName("text")
-    lateinit var result: ArrayList<String>
+    lateinit var translationResults: ArrayList<String>
 
 }

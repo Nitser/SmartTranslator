@@ -8,6 +8,6 @@ import retrofit2.http.Query
 interface YandexApi {
 
     @GET
-    fun getUser(@Query("text") text: String, @Query("lang") lang: String): Single<YandexTranslateResult>
+    fun getUser(@Query("text") text: String, @Query("lang") language: String): Single<YandexTranslateResult>
 
 }

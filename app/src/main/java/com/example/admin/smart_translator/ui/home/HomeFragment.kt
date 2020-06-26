@@ -17,13 +17,13 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearSnapHelper
 import com.example.admin.smart_translator.R
 import com.example.admin.smart_translator.databinding.FragmentHomeBinding
-import com.example.admin.smart_translator.entities.Language
-import com.example.admin.smart_translator.entities.PhotoCard
-import com.example.admin.smart_translator.layout_managers.CenterZoomLayoutManager
-import com.example.admin.smart_translator.model.FileStorageService
-import com.example.admin.smart_translator.ui.change_translated_flags.list.ChangeTranslatedFlagsAdapter
-import com.example.admin.smart_translator.view_model.CurrentPhotoCardViewModel
-import com.example.admin.smart_translator.view_model.FlagsViewModel
+import com.example.admin.smart_translator.layout_managers.CenterZoomFlagLayoutManager
+import com.example.admin.smart_translator.model.Flag
+import com.example.admin.smart_translator.model.PhotoCard
+import com.example.admin.smart_translator.ui.choose_translation_flags.list.CurrentFlagsAdapter
+import com.example.admin.smart_translator.utils.FileStorageUtils
+import com.example.admin.smart_translator.view_model.SelectedPhotoCardViewModel
+import com.example.admin.smart_translator.view_model.AllFlagsViewModel
 import com.example.admin.smart_translator.view_model.SelectedFlagsViewModel
 import com.example.admin.smart_translator.view_model.UserViewModel
 import java.io.IOException
@@ -31,19 +31,18 @@ import java.io.IOException
 class HomeFragment : Fragment() {
 
     private val selectedFlagsViewModel: SelectedFlagsViewModel by activityViewModels()
-    private val flagsViewModel: FlagsViewModel by activityViewModels()
+    private val allFlagsViewModel: AllFlagsViewModel by activityViewModels()
     private val userViewModel: UserViewModel by activityViewModels()
-    private val currentPhotoCardViewModel: CurrentPhotoCardViewModel by activityViewModels()
+    private val selectedPhotoCardViewModel: SelectedPhotoCardViewModel by activityViewModels()
 
     private lateinit var binding: FragmentHomeBinding
-    private val errorToastString = "Ошибка загрузки фотографии"
     private lateinit var newPhotoCard: PhotoCard
+    private lateinit var adapterFlagsFrom: CurrentFlagsAdapter
+    private lateinit var adapterFlagsTo: CurrentFlagsAdapter
 
     private val requestCodePhoto = 1
     private val requestCodeGallery = 2
-
-    private lateinit var adapterFrom: ChangeTranslatedFlagsAdapter
-    private lateinit var adapterTo: ChangeTranslatedFlagsAdapter
+    private val photoLoadErrorString = "Ошибка загрузки фотографии"
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         (activity as AppCompatActivity).supportActionBar!!.setHomeButtonEnabled(false)
@@ -53,32 +52,31 @@ class HomeFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val layoutManagerFrom = CenterZoomLayoutManager(view.context, 1, false, binding.homeFromText)
+        val layoutManagerFrom = CenterZoomFlagLayoutManager(view.context, 1, false, binding.homeFromText)
         binding.homeFlagListFrom.layoutManager = layoutManagerFrom
-        val snapHelper = LinearSnapHelper()
-        snapHelper.attachToRecyclerView(binding.homeFlagListFrom)
+        LinearSnapHelper().attachToRecyclerView(binding.homeFlagListFrom)
 
-        selectedFlagsViewModel.getSelectedFlags().observe(viewLifecycleOwner, Observer<ArrayList<Language>> { item ->
-            adapterFrom.flagList.addAll(item)
-            adapterTo.flagList.addAll(item)
-            adapterFrom.notifyDataSetChanged()
-            adapterTo.notifyDataSetChanged()
+        val layoutManagerTo = CenterZoomFlagLayoutManager(view.context, 1, false, binding.homeToText)
+        binding.homeFlagListTo.layoutManager = layoutManagerTo
+        LinearSnapHelper().attachToRecyclerView(binding.homeFlagListTo)
+
+        adapterFlagsFrom = CurrentFlagsAdapter()
+        adapterFlagsTo = CurrentFlagsAdapter()
+
+        selectedFlagsViewModel.getSelectedFlags().observe(viewLifecycleOwner, Observer<ArrayList<Flag>> { item ->
+            adapterFlagsFrom.currentFlags.addAll(item)
+            adapterFlagsTo.currentFlags.addAll(item)
+            adapterFlagsFrom.notifyDataSetChanged()
+            adapterFlagsTo.notifyDataSetChanged()
         })
 
-        val layoutManagerTo = CenterZoomLayoutManager(view.context, 1, false, binding.homeToText)
-        binding.homeFlagListTo.layoutManager = layoutManagerTo
-        val snapHelper2 = LinearSnapHelper()
-        snapHelper2.attachToRecyclerView(binding.homeFlagListTo)
         if (selectedFlagsViewModel.getSelectedFlags().value == null || selectedFlagsViewModel.getSelectedFlags().value?.size == 0) {
-            selectedFlagsViewModel.setDefaultFlags(flagsViewModel.getFlags().value!!)
+            selectedFlagsViewModel.setDefaultSelectedFlags(allFlagsViewModel.getAllFlags().value!!)
         }
 
-        adapterFrom = ChangeTranslatedFlagsAdapter()
-        adapterTo = ChangeTranslatedFlagsAdapter()
-
         with(binding) {
-            homeFlagListFrom.adapter = adapterFrom
-            homeFlagListTo.adapter = adapterTo
+            homeFlagListFrom.adapter = adapterFlagsFrom
+            homeFlagListTo.adapter = adapterFlagsTo
 
             homeFlagListFrom.postDelayed({ homeFlagListFrom.smoothScrollToPosition(7) }, 0)
             homeFlagListTo.postDelayed({ homeFlagListTo.smoothScrollToPosition(7) }, 0)
@@ -95,14 +93,14 @@ class HomeFragment : Fragment() {
 
     private fun initialPhotoCard(): PhotoCard {
         newPhotoCard = PhotoCard()
-        newPhotoCard.flagFromRes = requireContext().resources.getIdentifier(
-                "ic_${(binding.homeFlagListFrom.layoutManager as CenterZoomLayoutManager).getCurrentFlagIndex()}"
+        newPhotoCard.flagIconPathFromLang = requireContext().resources.getIdentifier(
+                "ic_${(binding.homeFlagListFrom.layoutManager as CenterZoomFlagLayoutManager).currentFlagIndex}"
                 , "mipmap"
                 , requireContext().packageName
         )
 
-        newPhotoCard.flagToRes = requireContext().resources.getIdentifier(
-                "ic_${(binding.homeFlagListTo.layoutManager as CenterZoomLayoutManager).getCurrentFlagIndex()}"
+        newPhotoCard.flagIconPathToLang = requireContext().resources.getIdentifier(
+                "ic_${(binding.homeFlagListTo.layoutManager as CenterZoomFlagLayoutManager).currentFlagIndex}"
                 , "mipmap"
                 , requireContext().packageName
         )
@@ -113,17 +111,17 @@ class HomeFragment : Fragment() {
         val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         if (takePictureIntent.resolveActivity(requireActivity().packageManager) != null) {
             try {
-                val fileStorageService = FileStorageService()
+                val fileStorageService = FileStorageUtils()
                 val photoFile = fileStorageService.createImageFile(requireContext())
                 initialPhotoCard()
-                newPhotoCard.filePath = photoFile.absolutePath
+                newPhotoCard.photoFilePathFromStorage = photoFile.absolutePath
                 val photoURI = FileProvider.getUriForFile(requireContext()
                         , "com.example.android.fileprovider", photoFile)
 
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
                 startActivityForResult(takePictureIntent, requestCodePhoto)
             } catch (ex: IOException) {
-                Toast.makeText(requireContext(), errorToastString, Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), photoLoadErrorString, Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -138,24 +136,24 @@ class HomeFragment : Fragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) =
             if (requestCode == requestCodePhoto && intent == null) {
-                newPhotoCard = currentPhotoCardViewModel.saveNewPhotoToStorage(newPhotoCard)
-                currentPhotoCardViewModel.setCurrentPhotoCards(newPhotoCard)
+                newPhotoCard = selectedPhotoCardViewModel.setSelectedPhotoCardFromStorage(newPhotoCard)
+                selectedPhotoCardViewModel.setSelectedPhotoCard(newPhotoCard)
                 userViewModel.addHistoryPhotoCards(newPhotoCard)
                 userViewModel.savePhotoCardToStorage(requireContext(), newPhotoCard)
                 requireActivity().findNavController(R.id.nav_host_fragment_home)
                         .navigate(HomeFragmentDirections.actionHomeFragmentToPhotoCardInfoFragment())
             } else if (requestCode == requestCodeGallery && resultCode == Activity.RESULT_OK && intent != null && intent.data != null) {
                 if (intent.data != null) {
-                    newPhotoCard = currentPhotoCardViewModel.getPhotoFromGallery(requireContext(), newPhotoCard, intent.data!!)
-                    currentPhotoCardViewModel.setCurrentPhotoCards(newPhotoCard)
+                    newPhotoCard = selectedPhotoCardViewModel.getPhotoFromGallery(requireContext(), newPhotoCard, intent.data!!)
+                    selectedPhotoCardViewModel.setSelectedPhotoCard(newPhotoCard)
                     userViewModel.addHistoryPhotoCards(newPhotoCard)
                     userViewModel.savePhotoCardToStorage(requireContext(), newPhotoCard)
                     requireActivity().findNavController(R.id.nav_host_fragment_home)
                             .navigate(HomeFragmentDirections.actionHomeFragmentToPhotoCardInfoFragment())
                 } else
-                    Toast.makeText(requireContext(), errorToastString, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), photoLoadErrorString, Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(requireContext(), errorToastString, Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), photoLoadErrorString, Toast.LENGTH_SHORT).show()
             }
 
 }

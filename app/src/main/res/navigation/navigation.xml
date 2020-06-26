@@ -28,7 +28,7 @@
     </fragment>
     <fragment
         android:id="@+id/flagListFragment"
-        android:name="com.example.admin.smart_translator.ui.select_flag_list.FlagSelectFlagList"
+        android:name="com.example.admin.smart_translator.ui.user_flag_selection.UserFlagSelectionFragment"
         android:label="@string/fragment_select_flags_title"
         tools:layout="@layout/fragment_select_flag_list" >
     </fragment>
@@ -38,8 +38,7 @@
         android:label="" >
         <argument
             android:name="photoCardType"
-            app:argType="com.example.admin.smart_translator.ui.photo_card_list.PhotoCardType"
-            android:defaultValue="HistoryList" />
+            app:argType="com.example.admin.smart_translator.app.PhotoCardType" />
         <action
             android:id="@+id/action_photoCardFragment_to_photoCardInfoFragment"
             app:destination="@id/photoCardInfoFragment"
@@ -55,6 +54,6 @@
     </fragment>
     <fragment
         android:id="@+id/changeSelectedFlagsFragment"
-        android:name="com.example.admin.smart_translator.ui.change_translated_flags.ChangeTranslatedFlagsFragment"
+        android:name="com.example.admin.smart_translator.ui.choose_translation_flags.ChooseTranslationFlagsFragment"
         android:label="ChangeSelectedFlagsFragment" />
 </navigation>
