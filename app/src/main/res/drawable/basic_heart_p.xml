@@ -6,7 +6,7 @@
         android:right="15dp"
         android:top="4dp">
 
-        <bitmap android:src="@drawable/ic_basic_heart_p"/>
+        <bitmap android:src="@drawable/ic_favorite_board_pink"/>
 
     </item>
 </layer-list>

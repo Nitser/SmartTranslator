@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ПЕРСЕТЬ</string>
+    <string name="app_name">Smart Translator</string>
     <string name="start">Start</string>
     <string name="photo">Photo</string>
     <string name="back">Домой</string>
@@ -11,11 +11,17 @@
     <string name="results_hint">----------- Results will be here -----------</string>
     <string name="favorite">favorite</string>
     <string name="no_results">Sorry, we nothing found :(</string>
-    <string name="List_of_languages">Список языков</string>
-    <string name="bback">Назад</string>
-    <string name="offer">в разработке</string>
-    <string name="pleasepay">#ВРАЗРАБОТКЕ</string>
-    <!--<string name="offer">Если вам понравилось наше приложение, мы были бы счастливы если бы вы угостили нас чашечкой коффе</string>-->
-    <!--<string name="pleasepay">#НАВКУСНОЕКОФЕ</string>-->
-    <string name="reset">Сбросить</string>
+    <string name="List_of_languages">Language list</string>
+
+    <string name="menu_select_flags_title_reset">Reset</string>
+    <string name="menu_select_flags_title_done">Done</string>
+
+    <string name="fragment_select_flags_title">Select flags</string>
+    <string name="fragment_history">History</string>
+    <string name="fragment_favorite">Favorite</string>
+
+<!--    bottom menu items   -->
+    <string name="bottom_menu_item_home">Home</string>
+    <string name="bottom_menu_item_history">History</string>
+    <string name="bottom_menu_item_favorite">Favorite</string>
 </resources>

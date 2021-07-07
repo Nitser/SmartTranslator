@@ -1,0 +1,159 @@
+package com.example.admin.smart_translator.ui.home
+
+import android.app.Activity
+import android.content.Intent
+import android.os.Bundle
+import android.provider.MediaStore
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.FileProvider
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
+import androidx.navigation.findNavController
+import androidx.recyclerview.widget.LinearSnapHelper
+import com.example.admin.smart_translator.R
+import com.example.admin.smart_translator.databinding.FragmentHomeBinding
+import com.example.admin.smart_translator.layout_managers.CenterZoomFlagLayoutManager
+import com.example.admin.smart_translator.model.Flag
+import com.example.admin.smart_translator.model.PhotoCard
+import com.example.admin.smart_translator.ui.choose_translation_flags.list.CurrentFlagsAdapter
+import com.example.admin.smart_translator.utils.FileStorageUtils
+import com.example.admin.smart_translator.view_model.SelectedPhotoCardViewModel
+import com.example.admin.smart_translator.view_model.AllFlagsViewModel
+import com.example.admin.smart_translator.view_model.SelectedFlagsViewModel
+import com.example.admin.smart_translator.view_model.UserViewModel
+import java.io.IOException
+
+class HomeFragment : Fragment() {
+
+    private val selectedFlagsViewModel: SelectedFlagsViewModel by activityViewModels()
+    private val allFlagsViewModel: AllFlagsViewModel by activityViewModels()
+    private val userViewModel: UserViewModel by activityViewModels()
+    private val selectedPhotoCardViewModel: SelectedPhotoCardViewModel by activityViewModels()
+
+    private lateinit var binding: FragmentHomeBinding
+    private lateinit var newPhotoCard: PhotoCard
+    private lateinit var adapterFlagsFrom: CurrentFlagsAdapter
+    private lateinit var adapterFlagsTo: CurrentFlagsAdapter
+
+    private val requestCodePhoto = 1
+    private val requestCodeGallery = 2
+    private val photoLoadErrorString = "Ошибка загрузки фотографии"
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        (activity as AppCompatActivity).supportActionBar!!.setHomeButtonEnabled(false)
+        (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(false)
+        binding = FragmentHomeBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        val layoutManagerFrom = CenterZoomFlagLayoutManager(view.context, 1, false, binding.homeFromText)
+        binding.homeFlagListFrom.layoutManager = layoutManagerFrom
+        LinearSnapHelper().attachToRecyclerView(binding.homeFlagListFrom)
+
+        val layoutManagerTo = CenterZoomFlagLayoutManager(view.context, 1, false, binding.homeToText)
+        binding.homeFlagListTo.layoutManager = layoutManagerTo
+        LinearSnapHelper().attachToRecyclerView(binding.homeFlagListTo)
+
+        adapterFlagsFrom = CurrentFlagsAdapter()
+        adapterFlagsTo = CurrentFlagsAdapter()
+
+        selectedFlagsViewModel.getSelectedFlags().observe(viewLifecycleOwner, Observer<ArrayList<Flag>> { item ->
+            adapterFlagsFrom.currentFlags.addAll(item)
+            adapterFlagsTo.currentFlags.addAll(item)
+            adapterFlagsFrom.notifyDataSetChanged()
+            adapterFlagsTo.notifyDataSetChanged()
+        })
+
+        if (selectedFlagsViewModel.getSelectedFlags().value == null || selectedFlagsViewModel.getSelectedFlags().value?.size == 0) {
+            selectedFlagsViewModel.setDefaultSelectedFlags(allFlagsViewModel.getAllFlags().value!!)
+        }
+
+        with(binding) {
+            homeFlagListFrom.adapter = adapterFlagsFrom
+            homeFlagListTo.adapter = adapterFlagsTo
+
+            homeFlagListFrom.postDelayed({ homeFlagListFrom.smoothScrollToPosition(7) }, 0)
+            homeFlagListTo.postDelayed({ homeFlagListTo.smoothScrollToPosition(7) }, 0)
+
+            homeButtonPhoto.setOnClickListener { startDispatchTakePictureIntent() }
+            homeButtonGallery.setOnClickListener { startDispatchGalleryIntent() }
+
+            homeButtonChooseFlags.setOnClickListener {
+                requireActivity().findNavController(R.id.nav_host_fragment_home)
+                        .navigate(HomeFragmentDirections.actionHomeFragmentToFlagListFragment())
+            }
+        }
+    }
+
+    private fun initialPhotoCard(): PhotoCard {
+        newPhotoCard = PhotoCard()
+        newPhotoCard.flagIconPathFromLang = requireContext().resources.getIdentifier(
+                "ic_${(binding.homeFlagListFrom.layoutManager as CenterZoomFlagLayoutManager).currentFlagIndex}"
+                , "mipmap"
+                , requireContext().packageName
+        )
+
+        newPhotoCard.flagIconPathToLang = requireContext().resources.getIdentifier(
+                "ic_${(binding.homeFlagListTo.layoutManager as CenterZoomFlagLayoutManager).currentFlagIndex}"
+                , "mipmap"
+                , requireContext().packageName
+        )
+        return newPhotoCard
+    }
+
+    private fun startDispatchTakePictureIntent() {
+        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        if (takePictureIntent.resolveActivity(requireActivity().packageManager) != null) {
+            try {
+                val fileStorageService = FileStorageUtils()
+                val photoFile = fileStorageService.createImageFile(requireContext())
+                initialPhotoCard()
+                newPhotoCard.photoFilePathFromStorage = photoFile.absolutePath
+                val photoURI = FileProvider.getUriForFile(requireContext()
+                        , "com.example.android.fileprovider", photoFile)
+
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                startActivityForResult(takePictureIntent, requestCodePhoto)
+            } catch (ex: IOException) {
+                Toast.makeText(requireContext(), photoLoadErrorString, Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun startDispatchGalleryIntent() {
+        initialPhotoCard()
+        val intent = Intent()
+        intent.type = "image/*"
+        intent.action = Intent.ACTION_GET_CONTENT
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), requestCodeGallery)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) =
+            if (requestCode == requestCodePhoto && intent == null) {
+                newPhotoCard = selectedPhotoCardViewModel.setSelectedPhotoCardFromStorage(newPhotoCard)
+                selectedPhotoCardViewModel.setSelectedPhotoCard(newPhotoCard)
+                userViewModel.addHistoryPhotoCards(newPhotoCard)
+                userViewModel.savePhotoCardToStorage(requireContext(), newPhotoCard)
+                requireActivity().findNavController(R.id.nav_host_fragment_home)
+                        .navigate(HomeFragmentDirections.actionHomeFragmentToPhotoCardInfoFragment())
+            } else if (requestCode == requestCodeGallery && resultCode == Activity.RESULT_OK && intent != null && intent.data != null) {
+                if (intent.data != null) {
+                    newPhotoCard = selectedPhotoCardViewModel.getPhotoFromGallery(requireContext(), newPhotoCard, intent.data!!)
+                    selectedPhotoCardViewModel.setSelectedPhotoCard(newPhotoCard)
+                    userViewModel.addHistoryPhotoCards(newPhotoCard)
+                    userViewModel.savePhotoCardToStorage(requireContext(), newPhotoCard)
+                    requireActivity().findNavController(R.id.nav_host_fragment_home)
+                            .navigate(HomeFragmentDirections.actionHomeFragmentToPhotoCardInfoFragment())
+                } else
+                    Toast.makeText(requireContext(), photoLoadErrorString, Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(requireContext(), photoLoadErrorString, Toast.LENGTH_SHORT).show()
+            }
+
+}
